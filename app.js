@@ -1,48 +1,41 @@
-// Teachable Machine Model URL
-const MODEL_URL = "https://teachablemachine.withgoogle.com/models/MR4cmgfqD/";
+// Teachable Machine Model URL - YENİ MODEL
+const MODEL_URL = "https://teachablemachine.withgoogle.com/models/2k0PM1YEL/";
 
 let model, maxPredictions;
 
-// Hastalık bilgileri ve öneriler
+// Hastalık bilgileri ve öneriler - 9 SINIF
 const diseaseInfo = {
-    "Balgam": {
+    "Gövde Öz Nekrozu": {
         icon: "🦠",
-        color: "#F44336",
-        advice: [
-            "Hastalıklı yaprakları derhal kesin ve imha edin",
-            "Bakır bazlı fungisit uygulayın",
-            "Serada havalandırmayı artırın",
-            "Sulamayı yaprak üzerinden değil, kökten yapın"
-        ]
-    },
-    "Ballı Basra": {
-        icon: "🍯",
-        color: "#FF9800",
-        advice: [
-            "Enfekte bitkileri izole edin",
-            "Özel fungisit tedavisi uygulayın",
-            "Serada nem oranını kontrol edin",
-            "Düzenli ilaçlama programı başlatın"
-        ]
-    },
-    "Çikolata Hastalığı": {
-        icon: "🍫",
-        color: "#795548",
-        advice: [
-            "Hasta bitki kısımlarını temizleyin",
-            "Fungal enfeksiyona karşı ilaç uygulayın",
-            "Toprak drenajını kontrol edin",
-            "Aşırı sulamadan kaçının"
-        ]
-    },
-    "Kanser": {
-        icon: "☢️",
         color: "#E91E63",
         advice: [
-            "Enfekte bitkileri derhal çıkarın ve yakın",
-            "Ekipmanları dezenfekte edin",
-            "Sağlıklı bitkilerle mesafeyi artırın",
-            "Hastalığa dayanıklı çeşitler tercih edin"
+            "Enfekte bitkileri derhal izole edin",
+            "Hastalıklı gövde kısımlarını kesin",
+            "Bakır bazlı bakterisit uygulayın",
+            "Serada havalandırmayı artırın",
+            "Sulamayı kontrollü yapın, aşırı nemden kaçının"
+        ]
+    },
+    "Domates Güvesi": {
+        icon: "🐛",
+        color: "#FF6F00",
+        advice: [
+            "Feromon tuzakları yerleştirin",
+            "Larvaları manuel olarak toplayın",
+            "Biyolojik insektisitler kullanın (Bacillus thuringiensis)",
+            "Hasarlı yaprak ve meyveleri imha edin",
+            "Gece kontrolleri yapın (kurtlar gece aktif)"
+        ]
+    },
+    "Mozaik Virüsü": {
+        icon: "🦠",
+        color: "#9C27B0",
+        advice: [
+            "Virüslü bitkileri derhal çıkarın ve imha edin",
+            "Vektör böcekleri (yaprak biti) kontrol edin",
+            "Ekipmanları ve elleri dezenfekte edin",
+            "Yeni tohum/fide alırken sertifikalı tercih edin",
+            "Serada hijyen kurallarına dikkat edin"
         ]
     },
     "Kırmızı Örümcek": {
@@ -51,48 +44,65 @@ const diseaseInfo = {
         advice: [
             "Akar ilaçları (akarisit) kullanın",
             "Serada nem oranını artırın (%60-70)",
-            "Yaprak altlarını kontrol edin",
-            "Biyolojik mücadele ajanları kullanın"
+            "Yaprak altlarını dikkatle kontrol edin",
+            "Biyolojik mücadele ajanları kullanın",
+            "Düzenli su spreyi ile nem artırın"
         ]
     },
-    "Kurt Hastalığı": {
-        icon: "🐛",
-        color: "#8BC34A",
+    "Kurşuni Küf": {
+        icon: "☁️",
+        color: "#607D8B",
         advice: [
-            "Larvaları elle toplayın",
-            "Biyolojik insektisitler kullanın (Bacillus thuringiensis)",
-            "Feromon tuzakları yerleştirin",
-            "Gece kontrolleri yapın (kurtlar gece aktif)"
+            "Enfekte bitki kısımlarını derhal kesin",
+            "Fungisit uygulayın (Botrytis'e özel)",
+            "Serada havalandırmayı iyileştirin",
+            "Nem oranını düşürün (%60'ın altına)",
+            "Gece sulamadan kaçının"
         ]
     },
     "Külleme": {
-        icon: "☁️",
-        color: "#9E9E9E",
+        icon: "❄️",
+        color: "#90A4AE",
         advice: [
             "Kükürt bazlı fungisitler uygulayın",
-            "Havalandırmayı iyileştirin",
-            "Yapraklar arası mesafeyi artırın",
-            "Sabah erken saatlerde sulama yapın"
+            "Havalandırmayı artırın",
+            "Yapraklar arası mesafeyi artırın (budama)",
+            "Sabah erken saatlerde sulama yapın",
+            "Nem kontrolü yapın, aşırı nemden kaçının"
         ]
     },
-    "Mozaik Virüsü": {
-        icon: "🦠",
-        color: "#FF5722",
+    "Lekeli Solgunluk": {
+        icon: "🔴",
+        color: "#F4511E",
         advice: [
-            "Virüslü bitkileri derhal çıkarın ve imha edin",
-            "Vektör böcekleri (yaprak biti) kontrol edin",
-            "Yeni tohum/fide alırken sertifikalı tercih edin",
-            "Serada hijyen kurallarına dikkat edin"
+            "Hasta bitkileri derhal izole edin",
+            "Vektör zararlıları (trips) kontrol edin",
+            "Hasta yaprak ve meyveleri imha edin",
+            "Sistemik insektisit kullanın",
+            "Yeni fideler için sertifikalı tohum kullanın"
+        ]
+    },
+    "Rugosa/Çikolata": {
+        icon: "🍫",
+        color: "#795548",
+        advice: [
+            "⚠️ KARANTİNA HASTALIĞI! Derhal bildir!",
+            "Tüm enfekte bitkileri imha edin (yakma)",
+            "Serayı tamamen dezenfekte edin",
+            "3-6 ay yeni ekim yapmayın",
+            "Ekipmanları ve araçları temizleyin",
+            "Tarım Müdürlüğü'ne bildirim yapın"
         ]
     },
     "Sağlıklı Domates": {
         icon: "✅",
         color: "#4CAF50",
         advice: [
-            "Harika! Bitkileriniz sağlıklı görünüyor",
+            "Harika! Bitkileriniz sağlıklı görünüyor! 🎉",
             "Normal bakım rutinine devam edin",
             "Düzenli sulama ve gübreleme yapın",
-            "Yaprakları haftada bir kontrol edin"
+            "Yaprakları haftada bir kontrol edin",
+            "Önleyici ilaçlama programını sürdürün"
         ]
     }
 };
@@ -201,7 +211,7 @@ function displayResult(prediction) {
     const info = diseaseInfo[className] || {
         icon: "❓",
         color: "#9E9E9E",
-        advice: ["Bilinmeyen hastalık. Uzman desteği alın."]
+        advice: ["Bilinmeyen durum. Uzman desteği alın."]
     };
 
     // Loading gizle
